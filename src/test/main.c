@@ -1,25 +1,40 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include "get_next_line.h"
 #include <fcntl.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include "../get_next_line.h"
+#include <stdio.h>
 
-int	*open_read_file(char *file, char *search)
+void	print(t_segment *segment, char *message)
 {
-	int		fd;
-	char	**line;
-
-	fd =  open(file, O_RDONLY);
-	if(-1 == fd)
-		return NULL;
-	while(!get_next_line(fd, **line))
-	{
-
-	}
-	close(fd);
-	return fd;
+	printf("-----------------------------------------------------------------\n");
+	printf("%s\n", message);
+	for(int i=0;i<ft_strlen(message);i++)
+		printf("-");
+	printf("\n");
+	printf("str: %s.\n", segment->str);
+	printf("\t\t\tReturn_value: %d\n", segment->len);
+	printf("\t\t\tprevious:%p\n", segment->previous);
+	printf("\t\t\tnext:%p\n", segment->next);
+	printf("-----------------------------------------------------------------\n\n");
+	fflush(stdout);
 }
 
-int main(void)
+int		main()
 {
+	char	*str = "";
+	char	*file = "/Users/yde-mont/git/get_next_line/toto.txt";
 
+	int		fd = open(file, O_RDONLY);
+	printf("Buffer:%d\n", BUFFER_SIZE);
+	if (ERROR == fd)
+	{
+		write(2, "ERROR on opening file!\n", 22);
+		return -1;
+	}
+	int i = 0;
+	while (get_next_line(fd, &str))
+		printf("line %d:\t\t%s.\n", i++, str);
+	printf("line %d:\t\t%s.\n", i++, str);
+	close(fd);
+	return (0);
 }
