@@ -8,7 +8,7 @@ void	print(t_segment *segment, char *message)
 {
 	printf("-----------------------------------------------------------------\n");
 	printf("%s\n", message);
-	for(int i=0;i<ft_strlen(message);i++)
+	for(int i=0;i<mod_strlen(message);i++)
 		printf("-");
 	printf("\n");
 	printf("str: %s.\n", segment->str);
@@ -19,10 +19,19 @@ void	print(t_segment *segment, char *message)
 	fflush(stdout);
 }
 
+int	ft_isascii(int c)
+{
+	if ((c >= 0 && c <= 127))
+		return (1);
+	return (0);
+}
+
 int		main()
 {
+
 	char	*str = "";
-	char	*file = "/Users/yde-mont/git/get_next_line/toto.txt";
+//	char	*file = "/Users/yde-mont/Desktop/ECLIPSE/workspace/LIBFT/get_next_line/toto.txt";
+	char	*file = "/Users/yde-mont/Desktop/ECLIPSE/workspace/LIBFT/get_next_line/numbers.dict.txt";
 
 	int		fd = open(file, O_RDONLY);
 	printf("Buffer:%d\n", BUFFER_SIZE);
@@ -33,8 +42,9 @@ int		main()
 	}
 	int i = 0;
 	while (get_next_line(fd, &str))
-		printf("line %d:\t\t%s.\n", i++, str);
-	printf("line %d:\t\t%s.\n", i++, str);
+		;
+//		printf("line %d:\t\t%s.\n", i++, str);
+//	printf("line %d:\t%s.\n", i++, str);
 	close(fd);
 	return (0);
 }

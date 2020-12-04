@@ -22,7 +22,7 @@ typedef struct s_segment
 int		indexof(char *str, char c);
 int		mod_strlcat(char *dst, char *src, int dst_size, int src_size);
 char	*ft_substr(char *s, unsigned int start, int len);
-int		ft_strlen(char *str);
+int		mod_strlen(char *str);
 int		get_next_line(int fd, char **line);
 int		line_length(t_segment **segment);
 

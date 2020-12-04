@@ -8,11 +8,13 @@ t_segment	*new_seg (t_segment *pseg, int status, char *str)
 	t_segment	*segment;
 	int			len;
 
-	len = ft_strlen(str);
+	len = mod_strlen(str);
 	if ((segment = malloc(sizeof(t_segment))))
 	{
-		segment->str = len ? str : malloc(sizeof(char) * len + 1);
+		segment->str = len ? str : NULL;
 		segment->len = len;
+		if (len != mod_strlen(str))
+			printf("coucou");
 		segment->status = str ? status : ERROR;
 		segment->previous = pseg;
 		if (pseg)
@@ -22,20 +24,20 @@ t_segment	*new_seg (t_segment *pseg, int status, char *str)
 	return (segment);
 }
 
-t_segment	*process_str(char *str, t_segment *lseg, int pos)
+t_segment	*process_str(char *str, t_segment *lseg)
 {
 	int			dst_size;
 	int			i;
-	char		*dst;
-	char		*src;
 	t_segment	*wseg;
 
+	dst_size = mod_strlen(str);
 	i = 0;
-	dst = str;
-	src = lseg->str;
-	dst_size = ft_strlen(str);
 	while (i < lseg->len)
-		dst[dst_size + i++] = *src++;
+	{
+		str[dst_size + i] = lseg->str[i];
+		i++;
+	}
+	str[dst_size + i] = 0;
 	free(lseg->str);
 	wseg = lseg;
 	lseg = lseg->next;
@@ -51,14 +53,18 @@ t_segment		*process_line(t_segment *lseg, int status, int pos, char **line)
 
 	nseg = new_seg(NULL, status, ft_substr(lseg->str, pos + 1, lseg->len - pos -1));
 	str = ft_substr(lseg->str, 0, pos);
+//	write(1, "free 5\n", 7);
+	if (lseg->len != mod_strlen(lseg->str))
+		printf("<%s>, %d, %d\n", lseg->str, lseg->len, mod_strlen(lseg->str));
 	free(lseg->str);
+//	write(1, "free 6\n", 7);
 	lseg->str = str;
-	lseg->len = ft_strlen(str);
+	lseg->len = mod_strlen(str);
 	len = line_length(&lseg);
 	if ((str = malloc(sizeof(char) * (len + 1))))
 	{
 		while (lseg)
-			lseg = process_str(str, lseg, pos);
+			lseg = process_str(str, lseg);
 		str[len + 1] = 0;
 	}
 	*line++ = str;
@@ -73,7 +79,7 @@ t_segment	*process_segment(int fd, t_segment *lseg, char **line)
 		lseg = process_line(lseg, LP, pos, line);
 	else
 	{
-		lseg = new_seg(lseg, OK, "");
+		lseg = new_seg(lseg, OK, NULL);
 		if ((lseg->str = malloc(sizeof(char) * BUFFER_SIZE)))
 		{
 			lseg->len = read(fd, lseg->str, BUFFER_SIZE);
@@ -81,6 +87,8 @@ t_segment	*process_segment(int fd, t_segment *lseg, char **line)
 				lseg = process_segment(fd, lseg, line);
 			else
 				lseg = process_line(lseg, EOF, 0, line);
+			if (lseg->len != mod_strlen(lseg->str))
+				printf("coucou2");
 		}
 		else
 			lseg->status = ERROR;

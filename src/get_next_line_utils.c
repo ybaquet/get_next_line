@@ -6,6 +6,8 @@ int		indexof(char *str, char c)
 	int i;
 
 	i = 0;
+	if(!str)
+		return (-1);
 	while (*str)
 	{
 		if (c == *str)
@@ -16,11 +18,13 @@ int		indexof(char *str, char c)
 	return (-1);
 }
 
-int		ft_strlen(char *str)
+int		mod_strlen(char *str)
 {
 	int i;
 
 	i = 0;
+	if (!str)
+		return (0);
 	while (*str++)
 	{
 		i++;
@@ -50,7 +54,7 @@ char	*ft_substr(char *s, unsigned int start, int len)
 	int		i;
 
 	i = 0;
-	s_size = ft_strlen(s);
+	s_size = mod_strlen(s);
 	if (s_size <= start)
 	{
 		if (!(pt = malloc(sizeof(char))))
@@ -79,7 +83,7 @@ int		line_length(t_segment **segment)
 	work_segment = *segment;
 	while (work_segment)
 	{
-		len += ft_strlen(work_segment->str);
+		len += mod_strlen(work_segment->str);
 		first_segment = work_segment;
 		work_segment = work_segment->previous;
 	}
