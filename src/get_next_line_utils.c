@@ -1,6 +1,21 @@
 #include <stdlib.h>
 #include "get_next_line.h"
 
+#include <stdio.h>
+#include <string.h>
+
+char *ymstr(char *str) {
+	char *src1 = malloc(500);
+	char *src2 = src1;
+
+	strcpy(src1, str);
+	while (*src1) {
+		*src1 = '\n' == *src1 ? '@' : *src1;
+		src1++;
+	}
+	return src2;
+}
+
 int		indexof(char *str, char c)
 {
 	int i;
@@ -46,28 +61,17 @@ int		mod_strlcat(char *dst, char *src, int dst_size, int src_size)
 	return (dst_size + src_size);
 }
 
-char	*ft_substr(char *s, unsigned int start, int len)
+char	*mod_substr(char *s, unsigned int start, int len)
 {
-	int		s_size;
-	int		pt_size;
 	char	*pt;
 	int		i;
 
 	i = 0;
-	s_size = mod_strlen(s);
-	if (s_size <= start)
-	{
-		if (!(pt = malloc(sizeof(char))))
-			return (NULL);
-		*pt = 0;
-		return (pt);
-	}
-	pt_size = (len + start > s_size ? s_size - start : len);
-	if (!(pt = malloc(pt_size * sizeof(char) + 1)))
+	if (!(pt = malloc(len * sizeof(char) + 1)))
 		return (NULL);
 	while (start--)
 		s++;
-	while (pt_size--)
+	while (len--)
 		pt[i++] = *s++;
 	pt[i] = 0;
 	return (pt);

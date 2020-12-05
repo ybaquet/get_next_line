@@ -41,10 +41,9 @@ int		main()
 		return -1;
 	}
 	int i = 0;
-	while (get_next_line(fd, &str))
-		;
-//		printf("line %d:\t\t%s.\n", i++, str);
-//	printf("line %d:\t%s.\n", i++, str);
+	while (get_next_line(fd, &str) && i < 6)
+		printf("line %d:\t\t%s.\n", i++, str);
+	printf("line %d:\t%s.\n", i++, str);
 	close(fd);
 	return (0);
 }
