@@ -13,9 +13,7 @@ void	print(t_segment *segment, char *message)
 	printf("\n");
 	printf("sizeof: %lu.\n", sizeof(t_segment));
 	printf("str: %s.\n", ymstr(segment->str));
-	printf("\t\t\tlen: %d\n", segment->len);
 	printf("\t\t\tstatus: %d\n", segment->status);
-	printf("\t\t\tprevious:%p\n", segment->previous);
 	printf("\t\t\tnext:%p\n\n", segment->next);
 	printf("-----------------------------------------------------------------\n\n");
 	fflush(stdout);
@@ -35,11 +33,13 @@ char *ymstr(char *str) {
 	return wbuffer;
 }
 
-int		indexof(char *str, char c)
+int		indexof(char *str, char c, int start)
 {
 	int i;
 
 	i = 0;
+	while (start--)
+		str++;
 	if(!str)
 		return (-1);
 	while (*str)
@@ -57,7 +57,7 @@ int		mod_strlen(char *str)
 	int i;
 
 	i = 0;
-	if (!str)
+	if (!str || !*str)
 		return (0);
 	while (*str++)
 	{
@@ -84,41 +84,14 @@ char	*mod_substr(char *s, int start, int len)
 {
 	char	*pt;
 	int		i;
-	char *s2 = s;
-	int l=len;
-	int b=start;
 
 	i = 0;
 	if (!(pt = malloc(len * sizeof(char) + 1)))
 		return (NULL);
-	printf("substr 0:<%s>, <%s>, pos:%d, %d, %p, %p\n", ymstr(s2), ymstr(pt), b, l, s2, pt);
 	while (start--)
 		s++;
-	while (len--)
+	while (len-- && *s)
 		pt[i++] = *s++;
 	pt[i] = 0;
-	printf("substr 1:<%s>, <%s>, pos:%d, %d, %p, %p\n", ymstr(s2), ymstr(pt), b, l, s2, pt);
-	pt[i - 1] = '#';
-	printf("substr 2:<%s>, <%s>, pos:%d, %d, %p, %p\n", ymstr(s2), ymstr(pt), b, l, s2, pt);
 	return (pt);
-}
-
-int		line_length(t_segment **segment)
-{
-	int			len;
-	t_segment	*work_segment;
-	t_segment	*first_segment;
-
-	len = 0;
-	work_segment = *segment;
-	while (work_segment)
-	{
-		len += mod_strlen(work_segment->str);
-		first_segment = work_segment;
-		work_segment = work_segment->previous;
-	}
-	*segment = first_segment;
-	printf("Len: %d\n", len);
-	fflush(stdout);
-	return (len);
 }

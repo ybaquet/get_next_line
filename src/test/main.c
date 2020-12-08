@@ -25,7 +25,7 @@ void test1() {
 	int i = 0;
 	while (get_next_line(fd, &str))
 		fprintf(stderr, "line %d:\t\t%s.\n", i++, str);
-	fprintf(stderr, "line %d:\t%s.\n", i++, str);
+	fprintf(stderr, "line %d:\t\t%s.\n", i++, str);
 	close(fd);
 }
 
