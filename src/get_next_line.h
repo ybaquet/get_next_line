@@ -17,13 +17,22 @@ typedef struct s_segment
 	struct s_segment	*next;
 	int					len;
 	int					status;
+	int	a_supprimer;
 } t_segment;
 
 int		indexof(char *str, char c);
 int		mod_strlcat(char *dst, char *src, int dst_size, int src_size);
-char	*mod_substr(char *s, unsigned int start, int len);
+char	*mod_substr(char *s, int start, int len);
 int		mod_strlen(char *str);
 int		get_next_line(int fd, char **line);
 int		line_length(t_segment **segment);
+
+// A supprimer
+void print(t_segment *segment, char *message);
+char *ymstr(char *str);
+void ft_putchar(char c);
+void ft_putstr(char *str);
+void ft_putnbr(int nb);
+
 
 #endif

@@ -4,16 +4,35 @@
 #include <stdio.h>
 #include <string.h>
 
-char *ymstr(char *str) {
-	char *src1 = malloc(500);
-	char *src2 = src1;
+void	print(t_segment *segment, char *message)
+{
+	printf("-----------------------------------------------------------------\n");
+	printf("%s\n", message);
+	for(int i=0;i<mod_strlen(message);i++)
+		printf("-");
+	printf("\n");
+	printf("sizeof: %lu.\n", sizeof(t_segment));
+	printf("str: %s.\n", ymstr(segment->str));
+	printf("\t\t\tlen: %d\n", segment->len);
+	printf("\t\t\tstatus: %d\n", segment->status);
+	printf("\t\t\tprevious:%p\n", segment->previous);
+	printf("\t\t\tnext:%p\n\n", segment->next);
+	printf("-----------------------------------------------------------------\n\n");
+	fflush(stdout);
+}
 
-	strcpy(src1, str);
-	while (*src1) {
-		*src1 = '\n' == *src1 ? '@' : *src1;
-		src1++;
+char wbuffer[500];
+char *ymstr(char *str) {
+	char *src2;
+	if (!str || !*str)
+		return str;
+	strcpy(wbuffer, str);
+	src2  = wbuffer;
+	while (*src2) {
+		*src2 = '\n' == *src2 ? '@' : *src2;
+		src2++;
 	}
-	return src2;
+	return wbuffer;
 }
 
 int		indexof(char *str, char c)
@@ -61,19 +80,26 @@ int		mod_strlcat(char *dst, char *src, int dst_size, int src_size)
 	return (dst_size + src_size);
 }
 
-char	*mod_substr(char *s, unsigned int start, int len)
+char	*mod_substr(char *s, int start, int len)
 {
 	char	*pt;
 	int		i;
+	char *s2 = s;
+	int l=len;
+	int b=start;
 
 	i = 0;
 	if (!(pt = malloc(len * sizeof(char) + 1)))
 		return (NULL);
+	printf("substr 0:<%s>, <%s>, pos:%d, %d, %p, %p\n", ymstr(s2), ymstr(pt), b, l, s2, pt);
 	while (start--)
 		s++;
 	while (len--)
 		pt[i++] = *s++;
 	pt[i] = 0;
+	printf("substr 1:<%s>, <%s>, pos:%d, %d, %p, %p\n", ymstr(s2), ymstr(pt), b, l, s2, pt);
+	pt[i - 1] = '#';
+	printf("substr 2:<%s>, <%s>, pos:%d, %d, %p, %p\n", ymstr(s2), ymstr(pt), b, l, s2, pt);
 	return (pt);
 }
 
@@ -92,7 +118,7 @@ int		line_length(t_segment **segment)
 		work_segment = work_segment->previous;
 	}
 	*segment = first_segment;
+	printf("Len: %d\n", len);
+	fflush(stdout);
 	return (len);
 }
-
-
