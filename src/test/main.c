@@ -13,8 +13,8 @@ int	ft_isascii(int c)
 
 void test1() {
 	char	*str = "";
-//	char	*file = "/Users/yde-mont/Desktop/ECLIPSE/workspace/LIBFT/get_next_line/toto.txt";
-	char	*file = "/Users/yde-mont/Desktop/ECLIPSE/workspace/LIBFT/get_next_line/numbers.dict.txt";
+	char	*file = "/Users/yde-mont/Desktop/ECLIPSE/workspace/LIBFT/get_next_line/toto.txt";
+//	char	*file = "/Users/yde-mont/Desktop/ECLIPSE/workspace/LIBFT/get_next_line/numbers.dict.txt";
 
 	int		fd = open(file, O_RDONLY);
 	printf("Buffer:%d\n", BUFFER_SIZE);
@@ -23,9 +23,14 @@ void test1() {
 		write(2, "ERROR on opening file!\n", 22);
 	}
 	int i = 0;
-	while (get_next_line(fd, &str))
+	int result = 1;
+	while ((result = get_next_line(fd, &str)) >= 0)
+	{
 		fprintf(stderr, "line %d:\t\t%s.\n", i++, str);
-	fprintf(stderr, "line %d:\t\t%s.\n", i++, str);
+		free(str);
+		if (!result)
+			break;
+	}
 	close(fd);
 }
 
@@ -38,6 +43,6 @@ void test2() {
 int		main()
 {
 	test1();
-
+ while(1) ;
 	return (0);
 }
