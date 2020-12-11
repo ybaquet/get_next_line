@@ -135,7 +135,7 @@ void test2() {
 
 	printf("%p, %p, %ld, %ld\n", s1, s2, s2 - s1, ((long) s2) - ((long) s1));
 }
-int		main()
+int		ym_main()
 {
 	test3();
 	return (0);
