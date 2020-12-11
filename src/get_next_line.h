@@ -41,7 +41,7 @@ typedef struct	s_file
 }				t_file;
 
 int				indexof(char *str, char c, int start);
-t_file			*new_tfile(int fd);
+t_file			*new_tfile(t_file *sfile, int fd);
 char			*mod_substr(char *s, int start, int len);
 int				mod_strlen(char *str);
 int				clear(t_file *sfile, int status);

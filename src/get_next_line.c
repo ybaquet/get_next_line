@@ -88,8 +88,8 @@ int		get_next_line(int fd, char **line)
 	char			*str;
 	int				len;
 
-	sfile = (sfile) ? sfile : new_tfile(fd);
-	if (!sfile || 0 >= BUFFER_SIZE || fd != sfile->fd || 0 > fd || 1023 < fd)
+	sfile = (sfile && sfile->status > 0) ? sfile : new_tfile(sfile, fd);
+	if (!sfile || 0 >= BUFFER_SIZE || fd != sfile->fd || 0 > fd)
 		return (ERROR);
 	while (CONTINUE == sfile->status)
 	{

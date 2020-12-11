@@ -79,10 +79,10 @@ char	*mod_substr(char *s, int start, int len)
 	return (pt);
 }
 
-t_file	*new_tfile(int fd)
+t_file	*new_tfile(t_file *sfile, int fd)
 {
-	t_file	*sfile;
-
+	if (sfile)
+		free(sfile);
 	sfile = NULL;
 	if ((sfile = malloc(sizeof(t_file))))
 	{
