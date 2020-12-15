@@ -13,12 +13,12 @@
 #include <stdlib.h>
 #include "get_next_line.h"
 
-int		clear(t_file *sfile, int status)
+int		clear(t_file **sfile, int status)
 {
 	t_segment *seg;
 	t_segment *nseg;
 
-	seg = sfile->fseg;
+	seg = (*sfile)->fseg;
 	while (seg && (ERROR == status || CONTINUE == status))
 	{
 		status = (ERROR == status) ? ERROR : seg->status;
@@ -26,11 +26,15 @@ int		clear(t_file *sfile, int status)
 		free(seg->str);
 		free(seg);
 		seg = nseg;
-		sfile->fseg = seg;
+		(*sfile)->fseg = seg;
 	}
 	if (ERROR == status || !seg)
-		return ((ERROR == status) ? ERROR : 0);
-	sfile->status = seg->status;
+	{
+		free(*sfile);
+		*sfile = NULL;
+		return ((ERROR == status) ? ERROR : END);
+	}
+	(*sfile)->status = seg->status;
 	return (1);
 }
 
@@ -81,8 +85,6 @@ char	*mod_substr(char *s, int start, int len)
 
 t_file	*new_tfile(t_file *sfile, int fd)
 {
-	if (sfile)
-		free(sfile);
 	sfile = NULL;
 	if ((sfile = malloc(sizeof(t_file))))
 	{
